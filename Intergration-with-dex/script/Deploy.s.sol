@@ -16,7 +16,7 @@ contract TokenScript is Script {
         IUniswapV2Router02(0xeaBcE3E74EF41FB40024a21Cc2ee2F5dDc615791); // sepolia address
     address public uniswapV2Pair;
     uint256 initialTotalSupply = 1_000_000 ether;
-    uint256 initialEthSupply = 0.1 ether;
+    uint256 initialEthSupply = 0.01 ether;
 
     address burn = 0x000000000000000000000000000000000000dEaD;
 
