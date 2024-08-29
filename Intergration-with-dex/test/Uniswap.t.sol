@@ -8,7 +8,7 @@ import {IUniswapV2Factory} from "uniswap-v2-core/interfaces/IUniswapV2Factory.so
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "forge-std/console.sol";
 
-contract CounterTest is Test {
+contract UniswapTest is Test {
     Token public token;
 
     // IUniswapV2Router02 public _uniswapV2Router =
@@ -68,7 +68,7 @@ contract CounterTest is Test {
             0,
             0,
             owner,
-            block.timestamp
+            block.timestamp + 2 minutes
         );
 
         tokenBalance = IERC20(token).balanceOf(owner);
@@ -117,7 +117,7 @@ contract CounterTest is Test {
             0,
             0,
             owner,
-            block.timestamp
+            block.timestamp + 2 minutes
         );
 
         tokenBalance = IERC20(token).balanceOf(owner);
@@ -136,19 +136,20 @@ contract CounterTest is Test {
         assertGt(lpBalance, 0);
 
         IERC20(uniswapV2Pair).approve(address(_uniswapV2Router), lpBalance);
-        (uint amountA, uint amountB) = _uniswapV2Router.removeLiquidityETH(
-            address(token),
-            lpBalance,
-            0,
-            0,
-            owner,
-            block.timestamp
-        );
+        (uint amountToken, uint amountETH) = _uniswapV2Router
+            .removeLiquidityETH(
+                address(token),
+                lpBalance,
+                0,
+                0,
+                owner,
+                block.timestamp + 2 minutes
+            );
         console.log(
             "------------------------------------------------------------"
         );
-        console.log("Returned amountA:   ", amountA);
-        console.log("Returned amountB:   ", amountB);
+        console.log("Returned amountA:   ", amountToken);
+        console.log("Returned amountB:   ", amountETH);
 
         tokenBalance = IERC20(token).balanceOf(owner);
         ethBalance = owner.balance;
@@ -164,8 +165,8 @@ contract CounterTest is Test {
             "------------------------------------------------------------"
         );
 
-        assertEq(tokenBalance, amountA);
-        assertEq(ethBalance, amountB);
+        assertEq(tokenBalance, amountToken);
+        assertEq(ethBalance, amountETH);
         assertEq(lpBalance, 0);
     }
 }

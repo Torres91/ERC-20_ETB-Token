@@ -50,14 +50,17 @@ contract TokenScript is Script {
             0, // Set to 0 for simplicity, should be estimated properly to handle slippage
             0, // Set to 0 for simplicity, should be estimated properly to handle slippage
             owner,
-            block.timestamp + 60 minutes
+            block.timestamp + 2 minutes
         );
 
         // Burn LP tokens
-        IERC20(uniswapV2Pair).transfer(
-            burn,
-            IERC20(uniswapV2Pair).balanceOf(owner)
-        );
+        // IERC20(uniswapV2Pair).transfer(
+        //     burn,
+        //     IERC20(uniswapV2Pair).balanceOf(owner)
+        // );
+        uint256 lpBalance = IERC20(uniswapV2Pair).balanceOf(owner);
+
+        IERC20(uniswapV2Pair).transfer(burn, lpBalance);
 
         vm.stopBroadcast();
     }
